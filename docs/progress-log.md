@@ -16,6 +16,7 @@
   - Data disimpan di D: (C: hanya ±155 GB kosong). **Usulan** (diputuskan di Tahap 5)
   - FFmpeg dipasang di Tahap 2. **Disetujui pengguna**
 - Commit / tag: commit pertama 15 Nov (bersama pekerjaan Tahap 1–13), tag `stage-00-pass`
+- GitHub (15 Nov): remote `origin` = https://github.com/Hekapoo-10/Markerless-Motion-Capture, **public** (rencana awal private; pengguna memilih public setelah diingatkan). `data/` dan `sources/` tidak ikut. **Disetujui pengguna**
 
 ## Tahap 1: Inventaris dan label kamera (15 Nov 2026)
 - Uji dini: `pytest tests/test_stage01_cameras.py` → 3/3 lulus (DSHOW + MSMF); uji tutup lensa → 6/6 benar → **UJI DINI LULUS**

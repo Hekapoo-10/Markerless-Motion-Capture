@@ -18,7 +18,7 @@ Versi 14 Nov 2026 (revisi malam: load cell di perangkat terpisah, gaya diketik p
 4. **Tanya sebelum keputusan besar**: mengganti library/versi, mengubah aturan KIM, mengubah protokol rekaman, atau menghapus data. Jangan langsung setuju; beri pendapat kritis.
 5. **Perangkat keras: jangan menebak.** Pengguna masih baru di elektronika. Jelaskan langkah demi langkah dan minta foto/screenshot bila ragu (kabel, Device Manager, label kamera).
 6. **Label status** untuk setiap klaim di dokumen: Bersumber / Sebagian / Asumsi / Usulan. Bedakan kutipan langsung dari parafrase, dan sertakan link.
-7. **Data tidak masuk Git.** Folder `data/` ada di `.gitignore`. Integritas file dijaga dengan `data/manifest.csv` (SHA-256).
+7. **Data tidak masuk Git.** Folder `data/` (rekaman, nama peserta) dan `sources/` (PDF berhak cipta) ada di `.gitignore`. Repo GitHub **public** (keputusan pengguna 15 Nov), jadi jangan pernah `git add -f` file dari kedua folder itu, dan jangan menulis nama peserta di file lain. Integritas file dijaga dengan `data/manifest.csv` (SHA-256).
 8. **Versi dikunci.** Jangan menaikkan versi paket di `requirements.txt` tanpa izin. Setelah instalasi berubah, perbarui `requirements.lock.txt`.
 9. Bahasa Indonesia untuk penjelasan dan dokumen. Nama variabel/fungsi dalam bahasa Inggris pendek.
 

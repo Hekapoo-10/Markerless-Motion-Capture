@@ -39,7 +39,7 @@ Setiap tahap memakai format yang sama: **Tujuan · Siapkan · Langkah · Kode in
 2. Buat env conda dan pasang paket (lihat `CLAUDE.md` §5). Pilih onnxruntime sesuai versi CUDA di header `nvidia-smi` (driver baru menulis `CUDA UMD Version`).
 3. Jalankan `python tools/env_report.py`, lalu periksa `configs/environment.yaml` bersama pengguna.
 4. Di Claude Code (dua prompt terpisah): `/plugin marketplace add DietrichGebert/ponytail` lalu `/plugin install ponytail@ponytail`. Ponytail hanya berupa prompt (SKILL.md), tidak butuh Node/Python. Pakai `/ponytail full` saat menulis kode dan `/ponytail-review` sebelum commit tiap tahap. Jangan memakai salinan ponytail yang berisi `.exe`/`.dll`.
-5. `pre-commit install`. Buat repo GitHub **private** (VS Code → Publish to GitHub) bila pengguna setuju.
+5. `pre-commit install`. Repo GitHub: https://github.com/Hekapoo-10/Markerless-Motion-Capture (**public**, keputusan pengguna 15 Nov; rencana awal private). Login lewat Git Credential Manager (browser).
 
 **Kode inti:** `tools/env_report.py` (CPU, RAM, disk per drive, GPU, versi CUDA driver, USB host controller, kamera → `configs/environment.yaml`).
 
