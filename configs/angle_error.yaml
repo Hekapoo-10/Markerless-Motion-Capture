@@ -1,0 +1,8 @@
+# Galat sudut kamera vs goniometer per sendi (derajat): bias + SD. Dipakai P4 (Tahap 13).
+# ASUMSI sampai uji goniometer Tahap 9 mengisi angka nyata.
+verified: false
+wrist_fe: {bias: 0, sd: 5}
+wrist_rud: {bias: 0, sd: 5}
+forearm_ps: {bias: 0, sd: 10}        # pronasi/supinasi paling lemah (PROJECT_OVERVIEW §4.3)
+shoulder_abd: {bias: 0, sd: 5}
+shoulder_fe: {bias: 0, sd: 5}

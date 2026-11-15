@@ -1,0 +1,17 @@
+opencv-contrib-python==4.13.0.92
+cv2-enumerate-cameras==1.4.0
+aniposelib==0.8.0
+numpy
+scipy
+pandas
+pyarrow
+numba
+pyyaml
+toml
+tqdm
+psutil
+manifold3d
+trimesh
+pytest
+ruff
+pre-commit

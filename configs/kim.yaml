@@ -1,0 +1,34 @@
+# KIM-MHO v12.5 (BAuA/ASER, 04.2019, "Draft for practical testing"); sumber di sources/.
+# Entri 1: PROJECT_OVERVIEW §3. Entri 2: sources/transcription/kim_form_entry2.yaml (dibaca dari gambar formulir).
+# 15 Nov: kedua entri cocok, dicek ulang dengan sources/pages/form_p-2.png dan form_p-3.png.
+verified: true
+
+fmax_n: {thumb: 80, index: 50}            # PROJECT_OVERVIEW §3.3a, dikunci 14 Nov
+fmax_scenarios_thumb: [56, 70, 80, 137]   # untuk P4
+
+# rasio gaya / FmaxM, batas atas inklusif; di atas 0,80 = peak (formulir hlm. 2)
+levels: [[0.15, low], [0.30, moderate], [0.50, high], [0.80, very_high]]
+
+force:
+  # nilai mentah, tanpa pembulatan (A55 cetak hlm. 34-35: 4,5 dan 4,65/menit -> "< 5").
+  # "< 5" eksklusif; kolom lain inklusif di batas atas; nilai di celah (15,5) masuk kolom berikutnya.
+  move_upper: [5, 15, 30, 60, 90]   # gerak/menit: <5 | 5-15 | 16-30 | 31-60 | 61-90
+  hold_upper: [15, 30, 60]          # detik tahan/menit: <=15 | 16-30 | 31-60
+  # 100 = sel abu-abu (A55 cetak hlm. 28: "graue Felder" = 100 poin); null = sel diarsir, tidak berlaku -> error
+  low:              {move: [0.5, 1, 2.5, 5, 7],      hold: [1.5, 3, 5.5]}
+  moderate:         {move: [0.5, 2, 4, 7.5, 11],     hold: [2.5, 4.5, 9]}
+  high:             {move: [1, 3, 6, 12, 18],        hold: [3.5, 7, 14]}
+  very_high:        {move: [1.5, 5, 10, 19, 100],    hold: [5.5, 11, 22]}   # 61-90 abu-abu tanpa angka (Sebagian)
+  peak:             {move: [8, 30, 100, 100, 100],   hold: [35, 100, 100]}
+  powerful_hitting: {move: [8, 30, 100, 100, 100],   hold: [null, null, null]}   # 16-90 abu-abu (Sebagian)
+
+# nilai yang diizinkan (fungsi tangga, tanpa interpolasi); formulir hlm. 2-3
+scales:
+  grip: [0, 2, 4]
+  conditions: [0, 1, 2]
+  posture: [0, 2, 4, 6]
+  organisation: [0, 2, 4]
+
+time_max_hours: 10
+# skor < batas -> kategori; >= 100 = high (formulir hlm. 3)
+risk: [[20, low], [50, slightly_increased], [100, substantially_increased]]

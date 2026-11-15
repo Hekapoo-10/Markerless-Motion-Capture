@@ -1,0 +1,8 @@
+/data/
+/sources/
+__pycache__/
+*.avi
+*.mp4
+*.mkv
+*.npz
+*.parquet

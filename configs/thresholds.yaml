@@ -1,0 +1,7 @@
+# Batas "ujung rentang gerak" (OCRA; PROJECT_OVERVIEW §4.1). Sudut > pos atau < -neg = di luar batas.
+# Tanda +/- mengikuti §4.3 (+ fleksi, + radial); wajib dicek dengan goniometer di Tahap 9. null = arah tidak dinilai.
+wrist_fe: {pos: 45, neg: 45}         # fleksi / ekstensi
+wrist_rud: {pos: 15, neg: 20}        # radial / ulnar (opsi 20 gabungan belum final)
+forearm_ps: {pos: 60, neg: 60}       # pronasi / supinasi (tanda dicek Tahap 9)
+shoulder_abd: {pos: 45, neg: null}
+shoulder_fe: {pos: 80, neg: 20}      # fleksi 70-80 (dipakai 80, Asumsi) / ekstensi

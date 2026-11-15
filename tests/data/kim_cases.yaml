@@ -1,0 +1,81 @@
+# Salinan dari sources/transcription/a55_test_cases.yaml (15 Nov), dipakai tests/test_stage11_kim.py.
+# KASUS UJI RESMI dari buku BAuA A55 "Manuelle Arbeitsprozesse" (jawaban dihitung oleh BAuA sendiri)
+# Dibuat 15 Nov 2026 oleh Claude (claude.ai) dari gambar halaman di sources/pages/a55_cetakXX.png.
+# "cetak" = nomor halaman tercetak; halaman PDF = cetak + 1.
+# Frekuensi sudah dinormalisasi ke per menit PERSIS seperti cara buku (tanpa pembulatan).
+# mode: step = cukup baca sel tabel; interp = buku memakai interpolasi (hanya untuk versi interpolasi).
+
+time_points:                       # A55 cetak hlm. 23
+  - {hours: 3,    expected: 3}
+  - {hours: 5.5,  expected: 5.5}   # "Zeitwichtung = 5,5"
+  - {hours: 5,    expected: 5}     # Beispiel 1: 3.000 x 6 s = 5 jam
+  - {hours: 3.75, expected: 3.75}  # Beispiel 2: 45 x 5 menit; "interpolierte Zeitwichtung ist 3,75"
+  - {hours: 0.5,  expected: 1}     # minimum 1 di formulir LMM-MA (cetak hlm. 23; formulir hlm. 4)
+
+interpolation_anchors:             # A55 cetak hlm. 28: poin berlaku di UJUNG rentang; hubungan linear
+  - {level: high,     moving_per_min: 60,   expected: 12}
+  - {level: moderate, holding_s_per_min: 30, expected: 4.5}
+
+force_cases:
+  - id: a55_p30_umverpacken        # Abb. 11, kemasan kue
+    page: 30
+    mode: step
+    note: "Siklus 2 s; 3 aksi gaya rendah per tangan per kotak; 30 kotak/menit"
+    left:  {moving: {low: 90}}
+    right: {moving: {low: 90}}
+    expected: {left: 7, right: 7, force: 7}
+
+  - id: a55_p31_falten_kleben      # Abb. 12
+    page: 31
+    mode: step
+    left:  {moving: {low: 42}}
+    right: {moving: {low: 54, moderate: 12}}
+    expected: {left: 5, right: 7, force: 7}
+
+  - id: a55_p32_klemmbausteine     # Abb. 13, siklus 30 s -> x2
+    page: 32
+    mode: step
+    note: "Kiri: tahan 20 s per siklus = 40 s/menit gaya rendah; gaya lawan 12x per siklus, separuh rendah separuh sedang"
+    left:  {holding: {low: 40}, moving: {low: 12, moderate: 12}}
+    right: {moving: {low: 48, moderate: 24}}         # 24 ambil + 24 posisikan (rendah); 24 tekan (sedang)
+    expected: {left: 8.5, right: 9, force: 9}
+
+  - id: a55_p33_pruefen            # Abb. 14, 8 benda/menit
+    page: 33
+    mode: step
+    note: "Kiri menahan benda hanya 3 s -> TIDAK dihitung sebagai holding (< 4 s)"
+    left:  {moving: {moderate: 16}}
+    right: {moving: {low: 16, moderate: 24}}
+    expected: {left: 4, right: 6.5, force: 6.5}
+
+  - id: a55_p34_turbinen           # Abb. 15, siklus 2 menit -> dibagi 2
+    page: 34
+    mode: step
+    note: "UJI BATAS: 15/menit -> kolom 5-15; 4,5/menit -> kolom <5 (buku TIDAK membulatkan ke 5)"
+    left:  {holding: {moderate: 15}, moving: {low: 6.5, moderate: 10, high: 3}}
+    right: {moving: {low: 10, moderate: 15, high: 4.5, very_high: 4.5}}
+    expected: {left: 6.5, right: 5.5, force: 6.5}
+
+  - id: a55_p35_polstern_kiri      # Abb. 16, siklus 4:20 -> dibagi 4,3 (angka pembagi dari buku)
+    page: 35
+    mode: step
+    note: "Kiri bisa diuji dengan versi tangga; semua nilai jelas di dalam kolom"
+    left:  {moving: {low: 6.51, moderate: 11.86, high: 12.09, very_high: 13.72, peak: 2.33, powerful_hitting: 0.93}}
+    expected: {left: 27}
+
+  - id: a55_p35_polstern_kanan
+    page: 35
+    mode: interp
+    note: >
+      UJI BATAS: peak 20/4,3 = 4,65/menit -> kolom <5 = 8 poin (buku tidak membulatkan ke 5).
+      very_high 136/4,3 = 31,6 (buku menulis "32") diinterpolasi menjadi 11 poin.
+      Versi tangga akan memberi 19 untuk sel itu (total 41) -> BUKAN jawaban resmi; jangan dipakai untuk uji versi tangga.
+    right: {moving: {low: 12.56, moderate: 14.88, high: 11.63, very_high: 31.63, peak: 4.65, powerful_hitting: 1.40}}
+    expected: {right: 33}
+
+full_score_case:                   # A55 cetak hlm. 47 (Abb. 25) dan 48
+  id: a55_p47_kartons_falten_kleben
+  page: 47
+  time_hours: 3.5                  # poin waktu 3,5 (linear, bukan 4)
+  indicators: {force: 7, gripping: 0, hand_arm: 1, working_conditions: 0, body_posture: 2, work_organisation: 2}
+  expected: {indicator_sum: 12, score: 42, risk_range: 2}   # cetak hlm. 48: "42 Punkten dem Risikobereich 2"

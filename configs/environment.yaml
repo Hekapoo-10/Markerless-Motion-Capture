@@ -1,0 +1,23 @@
+os: Windows-11-10.0.26100-SP0
+python: 3.12.15
+cpu: AMD Ryzen 9 9950X3D 16-Core Processor
+cpu_cores_physical: 16
+ram_gb: 63.6
+disk_free_gb:
+  C:\: 155.4
+  D:\: 445.6
+gpu: NVIDIA GeForce RTX 5060 Ti, 16311 MiB, 610.88
+cuda_driver: '13.3'
+usb_host_controllers:
+- AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)
+- AMD USB 3.10 eXtensible Host Controller - 1.10 (Microsoft)
+- AMD USB 3.10 eXtensible Host Controller - 1.20 (Microsoft)
+- ASMedia USB 3.20 eXtensible Host Controller - 1.20 (Microsoft)
+- AMD USB 2.0 eXtensible Host Controller - 1.20 (Microsoft)
+cameras_seen:
+- USB Camera
+- USB Camera
+- USB Camera
+- USB Camera
+- USB Camera
+- USB Camera

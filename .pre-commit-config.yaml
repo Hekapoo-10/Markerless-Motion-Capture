@@ -1,0 +1,10 @@
+# ruff dari env kimcam (versi terkunci), bukan diunduh pre-commit
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: ruff check
+        language: system
+        types: [python]
+        files: ^(src|tools|tests)/   # sama dengan CLAUDE.md §7; hardware/ = arsip perangkat lain

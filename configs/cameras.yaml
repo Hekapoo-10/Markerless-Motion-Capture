@@ -1,0 +1,27 @@
+backend: dshow
+format:
+  width: 1280
+  height: 800
+  fps: 30
+  fourcc: MJPG
+  fps_measured: 30.2
+exposure: null
+cameras:
+  front_left:
+    position: depan kiri peserta
+    usb_port: PCIROOT(0)#PCI(0201)#PCI(0000)#PCI(0C00)#PCI(0000)#USBROOT(0)#USB(11)#USB(2)
+  front:
+    position: depan tengah
+    usb_port: PCIROOT(0)#PCI(0801)#PCI(0004)#USBROOT(0)#USB(2)#USB(2)
+  front_right:
+    position: depan kanan peserta
+    usb_port: PCIROOT(0)#PCI(0801)#PCI(0003)#USBROOT(0)#USB(1)#USB(1)
+  top:
+    position: tepat di atas tangan
+    usb_port: PCIROOT(0)#PCI(0801)#PCI(0004)#USBROOT(0)#USB(2)#USB(1)
+  wing_left:
+    position: sayap kiri peserta
+    usb_port: PCIROOT(0)#PCI(0201)#PCI(0000)#PCI(0C00)#PCI(0000)#USBROOT(0)#USB(11)#USB(1)
+  wing_right:
+    position: sayap kanan peserta
+    usb_port: PCIROOT(0)#PCI(0801)#PCI(0003)#USBROOT(0)#USB(1)#USB(2)
