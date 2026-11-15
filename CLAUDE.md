@@ -86,7 +86,7 @@ pre-commit install
 ## 6. Struktur repo
 
 ```
-CLAUDE.md
+CLAUDE.md, README.md (penjelasan publik: latar belakang, status, cara mulai)
 pyproject.toml (paket kimcam, dipasang `pip install -e . --no-build-isolation`)
 requirements.txt, requirements.lock.txt, .gitignore, .pre-commit-config.yaml
 configs/   environment.yaml, cameras.yaml, sync.yaml, zones.yaml,
