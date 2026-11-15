@@ -31,7 +31,8 @@
   - Tata letak kamera: 3 depan (kiri, tengah, kanan), 1 atas tangan, 2 sayap; kamera belakang dihapus. **Disetujui pengguna**
   - Seri kamera tidak diganti; identifikasi lewat port USB. Kabel tidak boleh bertukar port, hub tidak boleh pindah port PC. **Disetujui pengguna**
   - Posisi `front` dan `top` belum final (kalibrasi Tahap 7 menunggu). **Disetujui pengguna**
-  - 15 Nov (`tools/view_cameras.py`): pengguna mengonfirmasi `front_left`/`front_right` benar di kiri/kanan peserta, dan `wing_right` mengarah ke bahu belakang kanan peserta (sesuai).
+  - 15 Nov: alat pendukung (`list_cameras`, `test_one_camera`, `test_six_cameras`, `view_cameras`) dipindah ke `tools/support/`; path `tools/…` di catatan lama mengacu ke sebelum pemindahan.
+  - 15 Nov (`tools/support/view_cameras.py`): pengguna mengonfirmasi `front_left`/`front_right` benar di kiri/kanan peserta, dan `wing_right` mengarah ke bahu belakang kanan peserta (sesuai).
   - Aturan kerja: uji dini sekarang, uji final setelah setup fisik dibekukan; Tahap 7+ menunggu setup beku. **Disetujui pengguna (15 Nov)**
 - Commit / tag: belum
 

@@ -71,7 +71,8 @@ Python 3.12 (conda + pip) · OpenCV (DirectShow) · rtmlib (RTMW) · onnxruntime
 ```
 configs/      kamera, sesi, tabel KIM-MHO, batas sudut, galat sudut
 src/kimcam/   kode utama (kamera, formulir, KIM, P1–P4)
-tools/        skrip cek kamera, rekam, dan proses
+tools/        program: label kamera, rekam sesi, laporan PC
+tools/support/  alat pendukung: daftar kamera, tes 1 dan 6 kamera, tampilan live 6 kamera
 tests/        tes per tahap (+ kasus resmi A55 di tests/data/)
 hardware/     dudukan load cell (CAD) dan sketsa Arduino
 docs/         PROJECT_OVERVIEW, STAGES, progress-log

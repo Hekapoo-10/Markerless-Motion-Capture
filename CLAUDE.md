@@ -96,8 +96,10 @@ hardware/    tes_realtime.ino, tes2_gaya_newton.ino, loadcell_mount.py, loadcell
 src/kimcam/  cameras.py, intake.py, sync.py, calib.py,
              pose2d.py, triang.py, angles.py, segment.py, kim.py,
              attribution.py, whatif.py, profile.py, stability.py
-tools/       env_report.py, list_cameras.py, identify_cameras.py, test_one_camera.py, test_six_cameras.py,
-             record_session.py (pendataan peserta + rekam), process_session.py
+tools/       program: env_report.py, identify_cameras.py, record_session.py (pendataan peserta + rekam),
+             process_session.py
+tools/support/  alat pendukung (cek, lihat, debug): list_cameras.py, test_one_camera.py,
+             test_six_cameras.py, view_cameras.py (6 kamera live)
 tests/       test_stage00_env.py ... test_stage14_pilot.py, data/kim_cases.yaml
 docs/        PROJECT_OVERVIEW.md, STAGES.md, progress-log.md, decisions.md
 sources/     (TIDAK di Git; berhak cipta) PDF formulir KIM-MHO v12.5, A55, dst.

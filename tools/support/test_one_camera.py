@@ -1,6 +1,6 @@
 """Tahap 2: ukur fps, jeda, dan frame dobel satu kamera; baca balik format/exposure; simpan 1 frame.
 
-Pakai: python tools/test_one_camera.py [label=top] [detik=60] [exposure, misalnya -7]
+Pakai: python tools/support/test_one_camera.py [label=top] [detik=60] [exposure, misalnya -7]
 """
 import sys
 import time

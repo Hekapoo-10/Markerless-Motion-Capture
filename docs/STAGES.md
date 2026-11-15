@@ -61,7 +61,7 @@ Setiap tahap memakai format yang sama: **Tujuan · Siapkan · Langkah · Kode in
 
 **Langkah:**
 1. Tempel label fisik. Foto setiap kamera dan foto posisi seluruh setup (termasuk hub dan colokannya).
-2. `python tools/list_cameras.py`: semua kamera per backend (index, nama, VID/PID, path).
+2. `python tools/support/list_cameras.py`: semua kamera per backend (index, nama, VID/PID, path).
 3. `python tools/identify_cameras.py`: jendela menampilkan satu kamera; tekan 1–6 sesuai posisinya → `usb_port` di `configs/cameras.yaml` terisi.
 4. `python tools/identify_cameras.py check`: uji tutup lensa per label (tekan `y` bila gambar gelap).
 5. Reboot → `pytest tests/test_stage01_cameras.py` + `check`. Cabut semua kabel, colok lagi ke port yang sama → ulangi.
@@ -87,10 +87,10 @@ Setiap tahap memakai format yang sama: **Tujuan · Siapkan · Langkah · Kode in
 - MSMF (5 detik): 29,2–29,4 frame baru/detik (ada frame dobel), jeda sampai 80 ms, dan exposure −8 terbaca −6. DSHOW: 30,2 fps tanpa dobel. Pilihan final di Tahap 3.
 
 **Langkah:**
-1. `python tools/test_one_camera.py top 60` (auto) dan `python tools/test_one_camera.py top 60 -7` (manual).
+1. `python tools/support/test_one_camera.py top 60` (auto) dan `python tools/support/test_one_camera.py top 60 -7` (manual).
 2. Uji final (setelah lampu final): pilih exposure sependek mungkin yang masih terang (tanpa blur saat menekan), isi `exposure` di `cameras.yaml`, ulangi langkah 1 dengan tangan menekan di bawah kamera.
 
-**Kode inti:** `tools/test_one_camera.py` (label, detik, exposure opsional → fps, jeda maks, jeda > 67 ms, frame dobel, format/exposure terbaca, contoh `data/interim/stage02_<label>.png`).
+**Kode inti:** `tools/support/test_one_camera.py` (label, detik, exposure opsional → fps, jeda maks, jeda > 67 ms, frame dobel, format/exposure terbaca, contoh `data/interim/stage02_<label>.png`).
 
 **Lulus jika:** fps rata-rata ≥ 29,5; tidak ada jeda > 67 ms (2 periode frame); tidak ada frame dobel; format dan exposure yang dibaca balik sama dengan yang di-set; gambar tajam saat tangan menekan (cek visual 1 frame).
 
@@ -107,7 +107,7 @@ Setiap tahap memakai format yang sama: **Tujuan · Siapkan · Langkah · Kode in
 2. Jalankan dengan `backend: dshow`, lalu `backend: msmf`.
 3. Bila ada kamera gagal: pindahkan ke USB host controller lain (maksimal 2–3 kamera per controller). Bila controller kurang, gunakan kartu PCIe USB dengan controller terpisah per port.
 
-**Kode inti:** `tools/test_six_cameras.py`
+**Kode inti:** `tools/support/test_six_cameras.py`
 ```python
 import threading, time
 import numpy as np

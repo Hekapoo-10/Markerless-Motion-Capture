@@ -1,6 +1,6 @@
 """Tahap 3: enam kamera bersamaan; fps, jeda, frame dobel per kamera, dan pemakaian CPU.
 
-Pakai: python tools/test_six_cameras.py [backend=dshow|msmf] [detik=300] [exposure, misalnya -7]
+Pakai: python tools/support/test_six_cameras.py [backend=dshow|msmf] [detik=300] [exposure, misalnya -7]
 """
 import sys
 import threading
