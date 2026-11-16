@@ -56,7 +56,7 @@ Pengerjaan bertahap (Tahap 0–14). Setiap tahap punya **uji dini** (dengan setu
 | 0 | Lingkungan dan repo | **Lulus** |
 | 1 | Label kamera dari port USB (tetap setelah reboot dan cabut-colok) | **Lulus** |
 | 2 | Tes 1 kamera, exposure manual −8 (30,2 fps tanpa frame hilang) | **Lulus** |
-| 3 | Tes 6 kamera bersamaan (DSHOW) | Uji dini lulus |
+| 3 | Tes 6 kamera bersamaan (DSHOW, 2 kamera per controller USB) | **Lulus** |
 | 4 | Perangkat load cell | Belum |
 | 5 | Formulir peserta + program rekam 6 kamera | Uji dini lulus |
 | 6–10 | Sinkron, kalibrasi kamera, pose, sudut, segmentasi aksi | Menunggu rig kamera final |

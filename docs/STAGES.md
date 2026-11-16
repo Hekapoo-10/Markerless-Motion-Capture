@@ -130,7 +130,11 @@ for label, t in sorted(ts.items()):
     print(f"{label}: fps={1000 / g.mean():.2f} jeda_maks={g.max():.1f} ms jeda>67ms={int((g > 67).sum())}")
 ```
 
-**Lulus jika:** keenam kamera memenuhi kriteria Tahap 2 selama 5 menit dengan satu backend yang sama.
+**Lulus jika:** keenam kamera memenuhi kriteria Tahap 2 selama 5 menit dengan satu backend yang sama, **kecuali frame dobel**: boleh ≤ 0,1% frame per kamera (`dup_max_fraction` di `cameras.yaml`) dan tidak boleh berturut-turut (2 dobel berurutan = kamera mulai beku). Jeda > 67 ms tetap 0.
+
+**Keputusan 16 Nov (pengguna; berlawanan dengan saran Claude untuk juga memindah hub C):** uji final menunjukkan front_left (hub C) memberi frame dobel identik penuh yang langka (5 lalu 1 per 5 menit, 0 saat sendirian). Hub C berbagi controller chipset dengan keyboard/mouse, LED RGB, dan Bluetooth (Asumsi penyebab). Dobel langka **ditoleransi**: ditandai `dup=1` di `<label>_ts.csv` dan dibuang per kamera saat analisis (Tahap 8). Bila muncul jeda > 67 ms atau kamera beku lagi, pemindahan hub C dibahas ulang.
+
+**Temuan 16 Nov (malam):** sesudahnya kamera hub C gagal dibuka / hilang sesaat. Penyebab: **satu controller USB hanya muat 2 kamera ini** (kamera ke-3 di satu controller selalu gagal dibuka), dan di controller chipset sisa jatah dipakai perangkat lain. Hub C dipindah ke controller AMD USB 2.0 `PCI(0803)` yang kosong → 6 kamera 5 menit tanpa dobel dan tanpa jeda. Aturan: 3 controller CPU × 2 kamera; controller chipset tidak dipakai untuk kamera. **[Bersumber: diukur]**
 
 **Catat:** hasil DSHOW vs MSMF, backend terpilih, peta kamera → controller.
 
@@ -167,7 +171,7 @@ Konsekuensi yang diterima: perubahan gaya selama 15 menit (lelah/belajar) tidak 
 2. `python tools/record_session.py --participant P001 --session S01 [--minutes 15] [--exposure -7]`. Program menolak bila exposure belum diisi, folder sesi sudah ada, atau disk data < 40 GB. Lalu formulir di terminal: nama, gender, tangan dominan, pengalaman, **gaya (N) tiap gerakan**; input salah ditanya ulang; ringkasan harus dikonfirmasi `y`.
 3. Nama **hanya** ditulis ke `data/participants_private.csv` (id, name). ID yang sudah ada boleh dipakai lagi **bila namanya sama** (sesi berikutnya orang yang sama); nama berbeda ditolak.
 4. Rekam: satu thread per kamera, `read()` → timestamp (bukan `grab()`, lihat Tahap 2) → abu-abu → `VideoWriter` MJPG 1 kanal (diterima di Windows, dicek 15 Nov) + `<label>_ts.csv` (frame, t_ns, dup). Berhenti saat durasi habis atau Enter. Status tiap 5 detik.
-5. **Peringatan langsung** bila satu kamera memberi frame dobel (kamera beku) atau jeda > 67 ms (dari data Tahap 3), supaya rekaman bisa dihentikan dan diulang.
+5. **Peringatan langsung** bila satu kamera memberi frame dobel (berturut-turut = kamera beku) atau jeda > 67 ms (dari data Tahap 3), supaya rekaman bisa dihentikan dan diulang.
 6. Setelah berhenti: `meta.yaml` (peserta tanpa nama + gaya per gerakan, mulai, durasi, backend, format, exposure, port kamera, `calibration_id` (Tahap 7), skenario jam, daftar gerakan, commit Git, statistik per kamera), lalu SHA-256 setiap file ke `data/manifest.csv`.
 7. Bila CPU > 80% atau frame hilang: ganti penulis video ke FFmpeg tanpa encode ulang (cadangan; CPU Tahap 3 hanya 3–5%).
 
@@ -177,7 +181,7 @@ Data: `data/` di repo adalah junction ke `D:\kimcam-data` (keputusan pengguna 15
 
 **Tes:** `tests/test_stage05_intake.py` (input diganti `monkeypatch`): kosong/huruf/negatif/`nan` ditanya ulang; `30,5` dibaca 30.5; nama tidak ada di hasil `intake()`; nama ada di file privat; ID sama + nama sama diterima tanpa baris baru; ID sama + nama lain ditolak; jawaban `n` tidak menyimpan apa pun.
 
-**Lulus jika:** tes formulir lulus; rekaman 5 menit dengan: fps tiap kamera ±0,5% dari fps terukur Tahap 3 (`format.fps_measured` = 30,2); jumlah frame **di jendela waktu bersama** sama di keenam kamera ±2 (kamera tidak mulai tepat bersamaan, jadi total frame bisa beda tanpa ada yang hilang); tidak ada jeda > 67 ms; tidak ada frame dobel; semua video bisa dibuka; manifest tertulis. (Kriteria lama "±0,5% dari 9.000" diganti 15 Nov atas izin pengguna; dihitung oleh `record_session.py`, baris "CEK REKAMAN".)
+**Lulus jika:** tes formulir lulus; rekaman 5 menit dengan: fps tiap kamera ±0,5% dari fps terukur Tahap 3 (`format.fps_measured` = 30,2); jumlah frame **di jendela waktu bersama** sama di keenam kamera ±2 (kamera tidak mulai tepat bersamaan, jadi total frame bisa beda tanpa ada yang hilang); tidak ada jeda > 67 ms; frame dobel ≤ 0,1% per kamera dan tidak berturut-turut (16 Nov, lihat Tahap 3); semua video bisa dibuka; manifest tertulis. (Kriteria lama "±0,5% dari 9.000" diganti 15 Nov atas izin pengguna; dihitung oleh `record_session.py`, baris "CEK REKAMAN".)
 
 **Catat:** pemakaian CPU/disk, ukuran file per menit.
 
@@ -246,7 +250,7 @@ def calibrate(day, square_mm, marker_mm):
 
 **Langkah:**
 1. Rekam 30 detik tugas + 10 detik tangan diam di atas jig.
-2. Jalankan RTMW di setiap video. Ubah frame abu-abu ke 3 kanal.
+2. Jalankan RTMW di setiap video. Ubah frame abu-abu ke 3 kanal. Frame dengan `dup=1` di `<label>_ts.csv` diberi NaN untuk kamera itu (gambar lama; dibuang dari triangulasi Tahap 9; keputusan 16 Nov, Tahap 3).
 3. Gambar titik di atas video (overlay) dan periksa bersama pengguna.
 4. Cek urutan titik tangan (91–132) dari metadata rtmlib.
 5. Ukur kecepatan model (frame/detik) untuk memperkirakan lama proses per orang.

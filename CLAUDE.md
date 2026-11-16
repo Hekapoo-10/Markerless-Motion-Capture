@@ -53,7 +53,7 @@ Kiri/kanan = sisi **peserta** (sama dengan tangan kiri/kanan di analisis). Diset
 - Model: InnoMaker U20CAM-9281M (OV9281 mono, global shutter, 1280×800, fisheye 148°, USB 2.0, UVC). Di Windows: VID 0C45 / PID 636D, nama "USB Camera".
 - Keenam kamera berseri sama (`SN0001`, bawaan pabrik), jadi kamera dikenali dari **alamat fisik port USB** (`usb_port` di `configs/cameras.yaml`, diisi `tools/identify_cameras.py`), bukan seri. Keputusan pengguna 14 Nov: seri tidak diganti.
 - Akibatnya: **kabel kamera tidak boleh bertukar port, dan hub tidak boleh pindah port PC.** Label fisik ada di badan kamera, kedua ujung kabel, dan port hub. Kalau colokan berubah, jalankan ulang `identify_cameras.py`.
-- Susunan USB sekarang: 3 hub eksternal, masing-masing 2 kamera, di 3 controller berbeda.
+- Susunan USB (16 Nov): 3 hub eksternal, masing-masing 2 kamera, di 3 controller CPU berbeda (`0801#0003`, `0801#0004`, `0803`). **Maksimal 2 kamera per controller** (kamera ke-3 gagal dibuka), dan jangan pakai controller chipset `0201` (berbagi dengan keyboard/mouse/Bluetooth/LED; kamera hilang-timbul).
 - Rekam: 1280×800, MJPG, 30 fps, exposure manual **−8** (Tahap 2, 16 Nov; wajib diisi karena kamera mengingat exposure terakhir; pilih ulang bila lampu berubah).
 - OpenCV + DSHOW (dicek 15 Nov): set FOURCC **terakhir**; pakai `read()`, **bukan** `grab()` (grab tidak menunggu frame baru).
 
@@ -125,9 +125,9 @@ Status fisik (16 Nov): rig terpasang, kabel dirapikan, lampu final. **Setup beku
 | 0 | Lingkungan + repo | 1 paket cv2, provider CUDA aktif, `CharucoDetector` ada, `environment.yaml` terisi | **Lulus** (tag `stage-00-pass`) |
 | 1 | Inventaris + label kamera | Peta label→port tetap setelah reboot dan cabut-colok; uji tutup lensa benar | **Lulus 16 Nov** (setelah reboot dan cabut-colok; tag `stage-01-pass`) |
 | 2 | Tes 1 kamera | ≥ 29,5 fps, tidak ada jeda > 67 ms, exposure manual terkunci | **Lulus 16 Nov** (exposure −8; tag `stage-02-pass`) |
-| 3 | Tes 6 kamera (DSHOW vs MSMF) | 6 kamera lulus kriteria Tahap 2 selama 5 menit | Uji dini 15 Nov: DSHOW dipilih (MSMF ±3% frame dobel); hub C 2× gangguan |
+| 3 | Tes 6 kamera (DSHOW vs MSMF) | 6 kamera lulus kriteria Tahap 2 selama 5 menit (dobel ≤ 0,1%, tidak berturut-turut; 16 Nov) | **Lulus 16 Nov** (DSHOW; 3 controller × 2 kamera, 0 dobel; tag `stage-03-pass`) |
 | 4 | Load cell di perangkat terpisah | Galat ≤ 0,3 N vs beban acuan; cara mendapat 1 angka per gerakan tertulis | [ ] |
-| 5 | Pendataan peserta + program rekam 6 kamera | Formulir menolak input salah; nama hanya di `participants_private.csv`; rekaman 5 menit: fps ±0,5% dari fps terukur, frame di jendela waktu bersama sama di 6 kamera ±2, tanpa jeda > 67 ms/dobel; manifest tertulis | Uji dini lulus 15 Nov; final menunggu setup beku |
+| 5 | Pendataan peserta + program rekam 6 kamera | Formulir menolak input salah; nama hanya di `participants_private.csv`; rekaman 5 menit: fps ±0,5% dari fps terukur, frame di jendela waktu bersama sama di 6 kamera ±2, tanpa jeda > 67 ms, dobel ≤ 0,1% tidak berturut-turut; manifest tertulis | Uji dini lulus 15 Nov; final menunggu setup beku |
 | 6 | Sinkron antar kamera dari gerakan tangan (**sesudah Tahap 8**) | Offset per kamera stabil (SD < 5 ms antar potongan 1 menit); reproyeksi tidak memburuk | [ ] |
 | 7 | Kalibrasi kamera | Reproyeksi < 0,5 px; 3× ulang, posisi kamera beda < 5 mm | [ ] |
 | 8 | Pose 2D RTMW | Tangan terlihat ≥ 3 kamera termasuk `top`; getaran pergelangan saat diam < 2 px SD | [ ] |

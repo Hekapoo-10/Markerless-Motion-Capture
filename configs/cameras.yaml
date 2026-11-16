@@ -6,10 +6,11 @@ format:
   fourcc: MJPG
   fps_measured: 30.2
 exposure: -8
+dup_max_fraction: 0.001
 cameras:
   front_left:
     position: depan kiri peserta
-    usb_port: PCIROOT(0)#PCI(0201)#PCI(0000)#PCI(0C00)#PCI(0000)#USBROOT(0)#USB(11)#USB(2)
+    usb_port: PCIROOT(0)#PCI(0803)#PCI(0000)#USBROOT(0)#USB(1)#USB(3)
   front:
     position: depan tengah
     usb_port: PCIROOT(0)#PCI(0801)#PCI(0004)#USBROOT(0)#USB(2)#USB(2)
@@ -21,7 +22,7 @@ cameras:
     usb_port: PCIROOT(0)#PCI(0801)#PCI(0004)#USBROOT(0)#USB(2)#USB(1)
   wing_left:
     position: sayap kiri peserta
-    usb_port: PCIROOT(0)#PCI(0201)#PCI(0000)#PCI(0C00)#PCI(0000)#USBROOT(0)#USB(11)#USB(1)
+    usb_port: PCIROOT(0)#PCI(0803)#PCI(0000)#USBROOT(0)#USB(1)#USB(4)
   wing_right:
     position: sayap kanan peserta
     usb_port: PCIROOT(0)#PCI(0801)#PCI(0003)#USBROOT(0)#USB(1)#USB(2)

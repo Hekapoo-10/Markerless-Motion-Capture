@@ -49,7 +49,8 @@ fmt = cfg["format"]
 caps = {label: open_camera(label, cfg) for label in LABELS}
 out.mkdir(parents=True)
 stop = threading.Event()
-stats = {label: {"frames": 0, "dup": 0, "gaps_over_67ms": 0, "max_gap_ms": 0.0, "read_fail": 0} for label in LABELS}
+stats = {label: {"frames": 0, "dup": 0, "dup_consecutive": 0, "gaps_over_67ms": 0, "max_gap_ms": 0.0, "read_fail": 0}
+         for label in LABELS}
 stamps = {label: [] for label in LABELS}
 
 
@@ -71,7 +72,7 @@ def record(label, cap):
     if not w.isOpened():
         warn(label, "VideoWriter gagal dibuka")
         return
-    s, prev, first, last = stats[label], None, None, None
+    s, prev, first, last, was_dup = stats[label], None, None, None, False
     with open(out / f"{label}_ts.csv", "w", encoding="utf-8") as fh:
         fh.write("frame,t_ns,dup\n")
         while not stop.is_set():
@@ -87,7 +88,9 @@ def record(label, cap):
             dup = prev is not None and np.array_equal(small, prev)
             if dup:
                 s["dup"] += 1
-                warn(label, "frame dobel (kamera beku?)")
+                s["dup_consecutive"] += was_dup
+                warn(label, "frame dobel berturut-turut (kamera beku?)" if was_dup else "frame dobel")
+            was_dup = dup
             if last is not None and (gap := (t - last) / 1e6) > 67:
                 s["gaps_over_67ms"] += 1
                 warn(label, f"jeda {gap:.0f} ms")
@@ -155,13 +158,15 @@ with manifest.open("a", newline="", encoding="utf-8") as fh:
         w.writerow([p.relative_to("data").as_posix(), p.stat().st_size, sha256(p), start.date().isoformat()])
 
 # kriteria Tahap 5 (15 Nov): fps tiap kamera +-0,5% dari fps terukur; jumlah frame di jendela waktu bersama
-# (kamera tidak mulai/berhenti tepat bersamaan) sama di 6 kamera +-2; tanpa jeda > 67 ms dan tanpa dobel
+# (kamera tidak mulai/berhenti tepat bersamaan) sama di 6 kamera +-2; tanpa jeda > 67 ms; dobel <= dup_max_fraction
+# dan tidak berturut-turut (16 Nov: frame dup=1 di <label>_ts.csv dibuang per kamera saat analisis)
 lo = max(stamps[label][0] for label in LABELS)
 hi = min(stamps[label][-1] for label in LABELS)
 common = {label: int(np.searchsorted(stamps[label], hi, "right") - np.searchsorted(stamps[label], lo)) for label in LABELS}
 ok = (all(abs(stats[label]["fps"] - fmt["fps_measured"]) <= 0.005 * fmt["fps_measured"] for label in LABELS)
       and max(common.values()) - min(common.values()) <= 2
-      and all(stats[label]["dup"] == 0 and stats[label]["gaps_over_67ms"] == 0 for label in LABELS))
+      and all(stats[label]["dup"] <= cfg["dup_max_fraction"] * stats[label]["frames"]
+              and stats[label]["dup_consecutive"] == 0 and stats[label]["gaps_over_67ms"] == 0 for label in LABELS))
 for label in LABELS:
     print(f"  {label:12} frame_jendela_bersama={common[label]} {stats[label]}")
 print(f"durasi {dur:.1f} s, jendela bersama {(hi - lo) / 1e9:.1f} s. Tersimpan: {out}")
