@@ -59,7 +59,8 @@ Pengerjaan bertahap (Tahap 0–14). Setiap tahap punya **uji dini** (dengan setu
 | 3 | Tes 6 kamera bersamaan (DSHOW, 2 kamera per controller USB) | **Lulus** |
 | 4 | Perangkat load cell | Belum |
 | 5 | Formulir peserta + program rekam 6 kamera | Uji dini lulus |
-| 6–10 | Sinkron, kalibrasi kamera, pose, sudut, segmentasi aksi | Menunggu rig kamera final |
+| 8 | Pose 2D RTMW (tangan terlihat di 6 kamera, ±30 frame/s di GPU) | **Lulus** |
+| 6, 7, 9, 10 | Sinkron, kalibrasi kamera, sudut 3D, segmentasi aksi | Belum |
 | 11 | Kalkulator KIM-MHO | **Lulus** (12 kasus resmi BAuA A55 identik) |
 | 12–13 | P1–P4 | Uji dini lulus (data buatan) |
 | 14 | Pilot satu orang | Belum |

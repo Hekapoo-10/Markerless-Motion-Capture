@@ -1,6 +1,7 @@
 """Tahap 5: pendataan peserta, lalu rekam 6 kamera sampai durasi habis atau Enter ditekan.
 
 Pakai: python tools/record_session.py --participant P001 --session S01 [--minutes 15] [--exposure -7] [--skip-intake]
+      [--preview]
 Hasil: data/raw/<peserta>/<sesi>/<label>.avi + <label>_ts.csv (frame, t_ns, dup) + meta.yaml; baris SHA-256
 di data/manifest.csv.
 """
@@ -28,6 +29,7 @@ ap.add_argument("--session", required=True)
 ap.add_argument("--minutes", type=float, default=15)
 ap.add_argument("--exposure", type=float)
 ap.add_argument("--skip-intake", action="store_true", help="rekaman uji tanpa peserta")
+ap.add_argument("--preview", action="store_true", help="tampilkan 6 kamera live (kecil) selama rekam")
 args = ap.parse_args()
 
 cfg = load_cfg()
@@ -52,6 +54,7 @@ stop = threading.Event()
 stats = {label: {"frames": 0, "dup": 0, "dup_consecutive": 0, "gaps_over_67ms": 0, "max_gap_ms": 0.0, "read_fail": 0}
          for label in LABELS}
 stamps = {label: [] for label in LABELS}
+latest = {}  # frame kecil terbaru per kamera, untuk --preview
 
 
 def warn(label, msg):
@@ -97,6 +100,8 @@ def record(label, cap):
             if last is not None:
                 s["max_gap_ms"] = round(max(s["max_gap_ms"], (t - last) / 1e6), 1)
             w.write(gray)
+            if args.preview and s["frames"] % 3 == 0:
+                latest[label] = gray[::4, ::4].copy()
             fh.write(f"{s['frames']},{t},{int(dup)}\n")
             stamps[label].append(t)
             s["frames"] += 1
@@ -112,10 +117,23 @@ for t in threads:
     t.start()
 threading.Thread(target=wait_enter, daemon=True).start()
 print(f"REKAM ke {out} ({args.minutes:g} menit). Tekan Enter untuk berhenti.", flush=True)
-while not stop.wait(5) and time.perf_counter() - t_start < args.minutes * 60:
-    n = [stats[label]["frames"] for label in LABELS]
-    print(f"{time.perf_counter() - t_start:6.0f} s  frame {min(n)}-{max(n)}", flush=True)
+next_status = 5
+while not stop.is_set() and (elapsed := time.perf_counter() - t_start) < args.minutes * 60:
+    if args.preview:  # jendela harus di thread utama; 10x per detik cukup untuk melihat posisi
+        blank = np.zeros((fmt["height"] // 4, fmt["width"] // 4), np.uint8)
+        tiles = [cv2.putText(latest.get(x, blank).copy(), x, (6, 22), cv2.FONT_HERSHEY_SIMPLEX, 0.7, 255, 2)
+                 for x in LABELS]
+        cv2.imshow("kimcam: REKAM (berhenti: Enter di terminal)",
+                   np.vstack([np.hstack(tiles[:3]), np.hstack(tiles[3:])]))
+        cv2.waitKey(100)
+    else:
+        stop.wait(0.1)
+    if elapsed >= next_status:
+        n = [stats[label]["frames"] for label in LABELS]
+        print(f"{elapsed:6.0f} s  frame {min(n)}-{max(n)}", flush=True)
+        next_status += 5
 stop.set()
+cv2.destroyAllWindows()
 for t in threads:
     t.join()
 dur = time.perf_counter() - t_start

@@ -130,7 +130,7 @@ Status fisik (16 Nov): rig terpasang, kabel dirapikan, lampu final. **Setup beku
 | 5 | Pendataan peserta + program rekam 6 kamera | Formulir menolak input salah; nama hanya di `participants_private.csv`; rekaman 5 menit: fps ±0,5% dari fps terukur, frame di jendela waktu bersama sama di 6 kamera ±2, tanpa jeda > 67 ms, dobel ≤ 0,1% tidak berturut-turut; manifest tertulis | Uji dini lulus 15 Nov; final menunggu setup beku |
 | 6 | Sinkron antar kamera dari gerakan tangan (**sesudah Tahap 8**) | Offset per kamera stabil (SD < 5 ms antar potongan 1 menit); reproyeksi tidak memburuk | [ ] |
 | 7 | Kalibrasi kamera | Reproyeksi < 0,5 px; 3× ulang, posisi kamera beda < 5 mm | [ ] |
-| 8 | Pose 2D RTMW | Tangan terlihat ≥ 3 kamera termasuk `top`; getaran pergelangan saat diam < 2 px SD | [ ] |
+| 8 | Pose 2D RTMW | Tangan tepat di ≥ 3 kamera termasuk `top` (cek visual overlay); getaran pergelangan diam dicatat (baseline) | **Lulus 16 Nov** (6/6 kamera saat diam; noise 1,0–2,2 px; tag `stage-08-pass`) |
 | 9 | 3D + sudut + uji goniometer | Bias dan batas kesesuaian tercatat per sudut | [ ] |
 | 10 | Segmentasi siklus + aksi + jari (kamera saja) | Batas aksi ≥ 90% (±3 frame); jumlah tekan selisih ≤ 2%; jari benar ≥ 95% | [ ] |
 | 11 | Kalkulator KIM-MHO | ≥ 10 kasus resmi A55 identik dengan jawaban BAuA (selisih 0), termasuk hlm. 30–31 dan 47 | **Lulus 15 Nov** (12 kasus resmi A55 identik; tag `stage-11-pass`) |

@@ -278,7 +278,9 @@ def run_pose(video_path, out_path, device="cuda"):
     np.savez_compressed(out_path, kps=np.array(kps), scores=np.array(scs))
 ```
 
-**Lulus jika:** saat menekan, tangan dominan terdeteksi (skor rata-rata titik tangan ≥ 0,5, ambang Asumsi) di ≥ 3 kamera termasuk `top`; saat tangan diam 10 detik, getaran titik pergelangan < 2 px SD (Asumsi).
+**Lulus jika (diubah 16 Nov, disetujui pengguna):** kerangka tangan tepat di atas jari di ≥ 3 kamera termasuk `top`, **dinilai visual** dari `pose_overlay.png` (klip kerja dan klip diam). Getaran pergelangan saat diam 10 detik (SD total dan noise cepat = sisa setelah rata-rata bergerak 0,5 s) **dicatat sebagai baseline**; akurasi dinilai di Tahap 9 (goniometer). Kriteria lama (skor ≥ 0,5; getaran < 2 px SD, keduanya Asumsi) diganti karena kerangka palsu di kursi kosong pun mendapat skor 1,5–4, dan batas 2 px tidak bersumber.
+
+**Temuan 16 Nov:** pilih orang dengan **kerangka terbesar**, bukan skor tertinggi (orang di latar wing_right sempat terpilih di 204/902 frame). Kamera samping harus diarahkan ke tangan **di meja** (diarahkan ulang 16 Nov dengan `tools/support/view_cameras.py pose`). Saat bekerja, benda harus tetap dekat jig/meja; benda yang diangkat ke dada keluar dari pandangan `top`.
 
 **Catat:** kamera yang melihat tangan, kecepatan model, contoh overlay.
 
@@ -289,7 +291,7 @@ def run_pose(video_path, out_path, device="cuda"):
 **Tujuan:** sudut pergelangan, lengan bawah, siku, dan bahu dalam derajat, beserta besar galatnya.
 
 **Langkah:**
-1. Triangulasi titik 2D (skor < 0,3 → NaN), isi celah ≤ 5 frame, filter Butterworth orde 4, 6 Hz.
+1. Triangulasi titik 2D (skor < 0,3 → NaN), isi celah ≤ 5 frame, filter Butterworth orde 4, 6 Hz. Dari `top` hanya titik tangan (91–132) yang dipakai; titik tubuh/wajah `top` dibuang (kerangka palsu di tepi gambar; keputusan pengguna 16 Nov). Titik satu kamera yang jauh dari reproyeksi kamera lain dibuang (loncatan saat tangan di tepi frame, Tahap 8).
 2. Hitung sudut sesuai `PROJECT_OVERVIEW.md` §4.3, dikurangi offset posisi netral.
 3. **Uji goniometer:** pengguna menahan pergelangan pada sudut yang diukur goniometer, masing-masing 3 detik dan 3 kali ulang:
    - fleksi/ekstensi 0, ±30, ±45, ±60°;
