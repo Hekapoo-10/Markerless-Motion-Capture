@@ -1,6 +1,6 @@
 """Lihat keenam kamera sekaligus (grid 3 x 2). q / Esc = tutup; gambar terakhir disimpan ke data/interim/.
 
-Pakai: python tools/support/view_cameras.py [exposure=-7]
+Pakai: python tools/support/view_cameras.py [exposure; default dari cameras.yaml]
 """
 import sys
 from pathlib import Path
@@ -12,7 +12,7 @@ from kimcam.cameras import LABELS, load_cfg, open_camera
 
 W, H = 480, 300  # ukuran tiap kotak di layar
 cfg = load_cfg()
-cfg["exposure"] = float(sys.argv[1]) if len(sys.argv) > 1 else -7.0  # kamera mengingat exposure lama
+cfg["exposure"] = float(sys.argv[1]) if len(sys.argv) > 1 else cfg["exposure"]
 caps = {label: open_camera(label, cfg) for label in LABELS}
 tiles = {label: np.zeros((H, W, 3), np.uint8) for label in LABELS}
 grid = None

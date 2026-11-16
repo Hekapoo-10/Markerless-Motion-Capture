@@ -54,7 +54,7 @@ Kiri/kanan = sisi **peserta** (sama dengan tangan kiri/kanan di analisis). Diset
 - Keenam kamera berseri sama (`SN0001`, bawaan pabrik), jadi kamera dikenali dari **alamat fisik port USB** (`usb_port` di `configs/cameras.yaml`, diisi `tools/identify_cameras.py`), bukan seri. Keputusan pengguna 14 Nov: seri tidak diganti.
 - Akibatnya: **kabel kamera tidak boleh bertukar port, dan hub tidak boleh pindah port PC.** Label fisik ada di badan kamera, kedua ujung kabel, dan port hub. Kalau colokan berubah, jalankan ulang `identify_cameras.py`.
 - Susunan USB sekarang: 3 hub eksternal, masing-masing 2 kamera, di 3 controller berbeda.
-- Rekam: 1280×800, MJPG, 30 fps, exposure manual (nilai dari Tahap 2; wajib diisi karena kamera mengingat exposure terakhir).
+- Rekam: 1280×800, MJPG, 30 fps, exposure manual **−8** (Tahap 2, 16 Nov; wajib diisi karena kamera mengingat exposure terakhir; pilih ulang bila lampu berubah).
 - OpenCV + DSHOW (dicek 15 Nov): set FOURCC **terakhir**; pakai `read()`, **bukan** `grab()` (grab tidak menunggu frame baru).
 
 ## 5. Tech stack (versi dikunci)
@@ -118,13 +118,13 @@ python tools/env_report.py               # perbarui configs/environment.yaml
 
 ## 8. Tahap kerja (status diperbarui setiap tahap lulus)
 
-Status fisik (15 Nov): posisi kamera sudah tetap; rig 3D print sedang dicetak, kabel belum dirapikan (kamera kadang tersenggol). **Setup belum beku.**
+Status fisik (16 Nov): rig terpasang, kabel dirapikan, lampu final. **Setup beku**; uji final berjalan dari Tahap 1.
 
 | # | Tahap | Lulus jika (ringkas, uji final) | Status |
 |---|---|---|---|
 | 0 | Lingkungan + repo | 1 paket cv2, provider CUDA aktif, `CharucoDetector` ada, `environment.yaml` terisi | **Lulus** (tag `stage-00-pass`) |
 | 1 | Inventaris + label kamera | Peta label→port tetap setelah reboot dan cabut-colok; uji tutup lensa benar | **Lulus 16 Nov** (setelah reboot dan cabut-colok; tag `stage-01-pass`) |
-| 2 | Tes 1 kamera | ≥ 29,5 fps, tidak ada jeda > 67 ms, exposure manual terkunci | Uji dini lulus 15 Nov; final menunggu lampu final |
+| 2 | Tes 1 kamera | ≥ 29,5 fps, tidak ada jeda > 67 ms, exposure manual terkunci | **Lulus 16 Nov** (exposure −8; tag `stage-02-pass`) |
 | 3 | Tes 6 kamera (DSHOW vs MSMF) | 6 kamera lulus kriteria Tahap 2 selama 5 menit | Uji dini 15 Nov: DSHOW dipilih (MSMF ±3% frame dobel); hub C 2× gangguan |
 | 4 | Load cell di perangkat terpisah | Galat ≤ 0,3 N vs beban acuan; cara mendapat 1 angka per gerakan tertulis | [ ] |
 | 5 | Pendataan peserta + program rekam 6 kamera | Formulir menolak input salah; nama hanya di `participants_private.csv`; rekaman 5 menit: fps ±0,5% dari fps terukur, frame di jendela waktu bersama sama di 6 kamera ±2, tanpa jeda > 67 ms/dobel; manifest tertulis | Uji dini lulus 15 Nov; final menunggu setup beku |

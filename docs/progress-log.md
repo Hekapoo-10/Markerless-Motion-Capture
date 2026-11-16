@@ -143,3 +143,18 @@
 - (a) Setelah cabut-colok semua kabel ke port yang sama: tes 3/3 lulus, uji tutup lensa 6/6 OK → **lulus**
 - (b) Setelah reboot: tes 3/3 lulus, uji tutup lensa 6/6 OK → **lulus**
 - Hasil: **Tahap 1 LULUS** (uji final). Commit / tag: `stage-01-pass`
+
+## Uji final Tahap 2: exposure (16 Nov 2026)
+- Lampu: lampu ruangan yang dipakai saat setup beku. Bila lampu/tirai berubah, pilih ulang exposure.
+- Pindai exposure keenam kamera, tangan diam di meja (terang rata-rata 0–255; jenuh ≤ 0,1% di semua nilai):
+  | Exposure | front_left | front | front_right | top | wing_left | wing_right |
+  |---|---|---|---|---|---|---|
+  | −10 | 46 | 50 | 29 | 57 | 22 | 19 |
+  | −9 | 62 | 83 | 85 | 127 | 55 | 34 |
+  | **−8** | 122 | 102 | 130 | 170 | 105 | 75 |
+  | −7 | 171 | 153 | 160 | 204 | 137 | 103 |
+  | −6 | 197 | 184 | 188 | 224 | 168 | 134 |
+  | −5 | 212 | 207 | 212 | 233 | 193 | 167 |
+- Dipilih **−8 (±3,9 ms)**: −9 terlalu gelap di kamera samping, −7 membuat meja putih di `top` mulai pudar dan waktu buka dua kali lipat. Satu nilai untuk semua kamera; `wing_right` paling gelap (cek lagi di Tahap 8). **Disetujui pengguna**
+- `test_one_camera.py top 60 -8` sambil jari menekan: 1812 frame, 30,20 fps, jeda maks 49,1 ms, 0 jeda > 67 ms, 0 dobel, MJPG 1280×800, exposure terbaca −8. Frame contoh: buku jari, kuku, dan rambut lengan tajam; jari yang sedang bergerak sedikit kabur (beberapa piksel).
+- Hasil: **Tahap 2 LULUS** (uji final). `exposure: -8` di `cameras.yaml`; `view_cameras.py` kini memakai exposure dari config. Commit / tag: `stage-02-pass`

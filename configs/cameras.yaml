@@ -5,7 +5,7 @@ format:
   fps: 30
   fourcc: MJPG
   fps_measured: 30.2
-exposure: null
+exposure: -8
 cameras:
   front_left:
     position: depan kiri peserta
