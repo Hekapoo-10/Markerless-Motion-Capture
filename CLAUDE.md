@@ -123,7 +123,7 @@ Status fisik (15 Nov): posisi kamera sudah tetap; rig 3D print sedang dicetak, k
 | # | Tahap | Lulus jika (ringkas, uji final) | Status |
 |---|---|---|---|
 | 0 | Lingkungan + repo | 1 paket cv2, provider CUDA aktif, `CharucoDetector` ada, `environment.yaml` terisi | **Lulus** (tag `stage-00-pass`) |
-| 1 | Inventaris + label kamera | Peta label→port tetap setelah reboot dan cabut-colok; uji tutup lensa benar | Uji dini lulus 15 Nov; final menunggu setup beku |
+| 1 | Inventaris + label kamera | Peta label→port tetap setelah reboot dan cabut-colok; uji tutup lensa benar | **Lulus 16 Nov** (setelah reboot dan cabut-colok; tag `stage-01-pass`) |
 | 2 | Tes 1 kamera | ≥ 29,5 fps, tidak ada jeda > 67 ms, exposure manual terkunci | Uji dini lulus 15 Nov; final menunggu lampu final |
 | 3 | Tes 6 kamera (DSHOW vs MSMF) | 6 kamera lulus kriteria Tahap 2 selama 5 menit | Uji dini 15 Nov: DSHOW dipilih (MSMF ±3% frame dobel); hub C 2× gangguan |
 | 4 | Load cell di perangkat terpisah | Galat ≤ 0,3 N vs beban acuan; cara mendapat 1 angka per gerakan tertulis | [ ] |

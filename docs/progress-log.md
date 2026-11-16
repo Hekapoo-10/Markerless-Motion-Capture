@@ -135,3 +135,11 @@
   - Gaya tiap gerakan digoyang ±10% di P4. **Disetujui pengguna**
   - Galat sudut = offset tetap per sendi per simulasi; batas digeser per sendi; label digeser bersama; FmaxM telunjuk tetap; sudut NaN dihitung di dalam batas. **Usulan**
   - Bahu fleksi memakai batas 80° (rentang OCRA 70–80°). **Asumsi**
+
+## Uji final Tahap 1: label kamera (16 Nov 2026)
+- Setup dibekukan (rig terpasang dan sesuai, dikonfirmasi pengguna 16 Nov).
+- Port USB keenam kamera sama persis dengan `cameras.yaml` → pelabelan ulang tidak perlu.
+- Sebelum reboot: uji tutup lensa 6/6 OK; `pytest tests/test_stage01_cameras.py` → 3/3 lulus.
+- (a) Setelah cabut-colok semua kabel ke port yang sama: tes 3/3 lulus, uji tutup lensa 6/6 OK → **lulus**
+- (b) Setelah reboot: tes 3/3 lulus, uji tutup lensa 6/6 OK → **lulus**
+- Hasil: **Tahap 1 LULUS** (uji final). Commit / tag: `stage-01-pass`
